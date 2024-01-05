@@ -1,6 +1,7 @@
 'use strict';
 
-const fetchGeneros = async () => {
+const fetchGeneros = async (filtro = 'movie') => {
+    const tipo = filtro === 'movie'?'movie' : 'tv';
     const options = {
         method: 'GET',
         headers: {
@@ -8,7 +9,7 @@ const fetchGeneros = async () => {
           Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjNTg0M2JjNDk5NDQ4OTAyNmQ2MDk5Yzg1NTJjYjNkNiIsInN1YiI6IjY1N2JkYjQ3NjNlNmZiMDEwMGM2YWM5NCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.DgQqwntqnrbyolcpjD0J4ujcQKULU9rhzHdXJZF6mRk'
         }
       };
-    const url = 'https://api.themoviedb.org/3/genre/movie/list?language=en';
+    const url = `https://api.themoviedb.org/3/genre/${tipo}/list?language=en`;
       
   try {
     const respuesta = await fetch(url, options);
@@ -36,7 +37,9 @@ const obtenerGenero = (id, generos) => {
 
 };
 
-const fetchPopulares = async() => {
+const fetchPopulares = async (filtro = 'movie') => {
+  const tipo = filtro === 'movie'?'movie' : 'tv';
+ 
   const options = {
     method: 'GET',
     headers: {
@@ -44,7 +47,8 @@ const fetchPopulares = async() => {
       Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjNTg0M2JjNDk5NDQ4OTAyNmQ2MDk5Yzg1NTJjYjNkNiIsInN1YiI6IjY1N2JkYjQ3NjNlNmZiMDEwMGM2YWM5NCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.DgQqwntqnrbyolcpjD0J4ujcQKULU9rhzHdXJZF6mRk'
     }
   };
-  const url = 'https://api.themoviedb.org/3/movie/popular?language=en-US&page=1';
+  
+  const url = `https://api.themoviedb.org/3/${tipo}/popular?language=en-US&page=1`;
 
   try {
     const respuesta = await fetch(url, options);
@@ -66,11 +70,12 @@ const fetchPopulares = async() => {
   }
   
    
+
 };
 
 const cargarTitulos = (resultados) => {
     const contenedor = document.querySelector('#populares .main__grid');
-
+    contenedor.innerHTML ='';
 
     
     resultados.forEach((resultado) => {
@@ -90,8 +95,10 @@ const cargarTitulos = (resultados) => {
 };
 
 const contenedorGeneros = document.getElementById('filtro-generos');
-const cargarGeneros = async() => {
-    const generos = await fetchGeneros();
+const cargarGeneros = async (filtro) => {
+    const generos = await fetchGeneros(filtro);
+
+    contenedorGeneros.innerHTML = '';
     generos.forEach((genero) =>{
         const btn = document.createElement('button');
         btn.classList.add('btn');
@@ -105,10 +112,39 @@ const cargarGeneros = async() => {
 
 };
 
+const filtroPelicula = document.getElementById('movie');
+const filtroShow = document.getElementById('tv');
+
+filtroPelicula.addEventListener('click', async(e) =>{
+    e.preventDefault();
+
+    cargarGeneros('movie');
+    const resultados = await fetchPopulares('movie');
+    cargarTitulos(resultados);
+
+    filtroShow.classList.remove('btn--active');
+    filtroPelicula.classList.add('btn--active');
+    document.querySelector('#populares .main__titulo').innerHTML = 'Películas Populares';
+
+});
+
+filtroShow.addEventListener('click',async(e) =>{
+    e.preventDefault();
+    cargarGeneros('tv');
+    const resultados = await fetchPopulares('tv');
+    cargarTitulos(resultados);
+
+    filtroPelicula.classList.remove('btn--active');
+    filtroShow.classList.add('btn--active');
+
+    document.querySelector('#populares .main__titulo').innerHTML = 'Series Populares';
+    
+});
+
 const cargar = async() =>{
     const resultados = await fetchPopulares();
     cargarTitulos(resultados);
-    cargarGeneros();
+    cargarGeneros('movie');
     
 };
 cargar();
