@@ -9,7 +9,6 @@ const cargarGeneros = async (filtro) => {
         btn.classList.add('btn');
         btn.innerText = genero.name;
         btn.setAttribute('data-id', genero.id)
-
         contenedorGeneros.appendChild(btn);
 
     })

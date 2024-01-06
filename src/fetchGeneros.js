@@ -12,6 +12,7 @@ const fetchGeneros = async (filtro = 'movie') => {
   try {
     const respuesta = await fetch(url, options);
     const datos = await respuesta.json();
+    
     return datos.genres 
   }
   catch (error) {

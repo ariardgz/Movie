@@ -14,7 +14,7 @@ filtroPelicula.addEventListener('click', async(e) =>{
 
     filtroShow.classList.remove('btn--active');
     filtroPelicula.classList.add('btn--active');
-    document.querySelector('#populares .main__titulo').innerHTML = 'Películas Populares';
+    document.querySelector('#populares .main__titulo').innerHTML = 'Popular Movies';
 
 })
 
@@ -27,6 +27,6 @@ filtroShow.addEventListener('click',async(e) =>{
     filtroPelicula.classList.remove('btn--active');
     filtroShow.classList.add('btn--active');
 
-    document.querySelector('#populares .main__titulo').innerHTML = 'Series Populares';
+    document.querySelector('#populares .main__titulo').innerHTML = 'Popular Series';
     
 })
