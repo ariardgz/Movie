@@ -284,7 +284,7 @@ const fetchItem = async(id) =>{
     const tipo = document.querySelector('.main__filtros .btn--active').id;
 
     try{
-        const url =  `https://api.themoviedb.org/3/${tipo}/${id}?api_key=b07dda1337fcfe0e08af7d3d2597908c&language=es-MX`;
+        const url =  `https://api.themoviedb.org/3/${tipo}/${id}?api_key=b07dda1337fcfe0e08af7d3d2597908c&language=en-US`;
         const respuesta = await fetch(url);
 		const datos = await respuesta.json();
 
@@ -297,12 +297,12 @@ const fetchItem = async(id) =>{
 };
 
 const contenedor = document.getElementById('populares');
-const popup = document.getElementById('media');
+const popup$1 = document.getElementById('media');
 
 contenedor.addEventListener('click', async(e)=>{
     if(e.target.closest('.main__media')){
 
-        popup.classList.add('media--active');
+        popup$1.classList.add('media--active');
 
         const id = e.target.closest('.main__media').dataset.id;
         const resultado = await fetchItem(id);
@@ -345,6 +345,14 @@ contenedor.addEventListener('click', async(e)=>{
 
     }
 
+});
+
+const popup = document.getElementById('media');
+
+popup.addEventListener('click', (e) =>{
+    if(e.target.closest('button')){
+        popup.classList.remove('media--active');
+    }
 });
 
 const cargar = async() =>{
